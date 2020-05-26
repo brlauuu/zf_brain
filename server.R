@@ -1,8 +1,8 @@
 
 server <- function(input, output, session) {
 	get_clusters = reactive({
-		object <<- readRDS(paste0("data/", input$stage))
-		c("all", levels(unique(object$seurat_clusters)))
+		object <<- UpdateSeuratObject(readRDS(paste0("data/", input$stage)))
+		c("all", levels(unique(object@active.ident)))
 	})
 	
 	get_genes = reactive({
@@ -28,7 +28,7 @@ server <- function(input, output, session) {
 		if (input$cluster == "all") {
 			DimPlot(object)
 		} else {
-			DimPlot(object[,object$seurat_clusters == input$cluster])
+			DimPlot(object[,object@active.ident == input$cluster])
 		}
 
 	})

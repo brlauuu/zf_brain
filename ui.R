@@ -20,15 +20,15 @@ navbarPage("[INSERT TITLE]!",
 		   		 	),
 		   		 	mainPanel(
 		   		 		fluidRow(
-		   		 			column(4,
-		   		 				   withSpinner(plotOutput("umap"))
-		   		 			),
-		   		 			column(4,
-		   		 				   withSpinner(plotOutput("violin"))
-		   		 			),
-		   		 			column(4,
+		   		 			# column(4,
+		   		 				   withSpinner(plotOutput("umap")),
+		   		 			# ),
+		   		 			# column(4,
+		   		 				   withSpinner(plotOutput("violin")),
+		   		 			# ),
+		   		 			# column(4,
 		   		 				   withSpinner(plotOutput("umap_gene"))
-		   		 			)
+		   		 			# )
 		   		 		)
 		   		 		
 		   		 	)
