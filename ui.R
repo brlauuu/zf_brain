@@ -29,7 +29,7 @@ navbarPage("[INSERT TITLE]!",
 		   		 )
 		   ),
    		   tabPanel("About",
-   		   		 verbatimTextOutput("About")
+   		   		 includeMarkdown("README.md")
    		   )
 )
 
