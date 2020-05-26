@@ -2,7 +2,7 @@
 server <- function(input, output, session) {
 	get_clusters = reactive({
 		object <<- UpdateSeuratObject(readRDS(paste0("data/", input$stage)))
-		c("all", levels(unique(object@active.ident)))
+		c("<select>", "all", levels(unique(object@active.ident)))
 	})
 	
 	get_genes = reactive({
@@ -25,6 +25,7 @@ server <- function(input, output, session) {
 	
 	output$umap <- renderPlot({
 		validate(need(input$stage != "<select>", "PLease select stage to be laoded."))
+		validate(need(input$cluster != "<select>", "PLease select cluster(s) to be plotted."))
 		if (input$cluster == "all") {
 			DimPlot(object)
 		} else {
