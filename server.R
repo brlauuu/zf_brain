@@ -9,7 +9,7 @@ server <- function(input, output, session) {
 	
 	get_genes = reactive({
 		# c("<select>", rownames(object))
-		c("<select>", rownames(object@raw.data))
+		c("<select>", sort(rownames(object@raw.data)))
 	})
 	observe({
 		input$stage
