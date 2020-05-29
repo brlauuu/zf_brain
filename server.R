@@ -43,7 +43,8 @@ server <- function(input, output, session) {
 			DimPlot(
 				SubsetData(object, cells.use = (object@ident %in% input$cluster)), 
 				reduction.use = "tsne", 
-				do.label = T
+				do.label = T,
+				cols.use = colors.to.use
 			)
 		}
 
@@ -54,12 +55,14 @@ server <- function(input, output, session) {
 		if ("all" %in% input$cluster) {
 			VlnPlot(
 				object,
-				features = input$gene
+				features = input$gene,
+				cols.use = colors.to.use
 			)
 		} else {
 			VlnPlot(
 				SubsetData(object, cells.use = (object@ident %in% input$cluster)),
-				features = input$gene
+				features = input$gene,
+				cols.use = colors.to.use
 			)
 		}
 		
