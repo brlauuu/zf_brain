@@ -32,10 +32,18 @@ server <- function(input, output, session) {
 		validate(need(input$cluster != "<select>", "PLease select cluster(s) to be plotted."))
 		if (input$cluster == "all") {
 			# DimPlot(object)
-			DimPlot(object, reduction.use = "tsne")
+			DimPlot(
+				object, 
+				reduction.use = "tsne", 
+				do.label = T
+			)
 		} else {
 			# DimPlot(object[,object@active.ident == input$cluster])
-			DimPlot(SubsetData(object, cells.use = object@ident == input$cluster), reduction.use = "tsne")
+			DimPlot(
+				SubsetData(object, cells.use = object@ident == input$cluster), 
+				reduction.use = "tsne", 
+				do.label = T
+			)
 		}
 
 	})
