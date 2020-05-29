@@ -35,7 +35,8 @@ server <- function(input, output, session) {
 			DimPlot(
 				object, 
 				reduction.use = "tsne", 
-				do.label = T
+				do.label = T,
+				cols.use = colors.to.use
 			)
 		} else {
 			# DimPlot(object[,object@active.ident == input$cluster])
@@ -56,6 +57,12 @@ server <- function(input, output, session) {
 	output$umap_gene <- renderPlot({
 		validate(need(input$gene != "<select>", "PLease select gene to be plotted over given clusters."))
 		# FeaturePlot(object, feature = input$gene)
-		FeaturePlot(object, feature = input$gene, reduction.use = "tsne", no.legend = F)
+		FeaturePlot(
+			object,
+			feature = input$gene,
+			reduction.use = "tsne",
+			no.legend = F,
+			cols.use = c("lightgray", "blue")
+		)
 	})
 }
