@@ -1,14 +1,15 @@
 library(shinycssloaders)
 library(Seurat)
+library(DT)
+library(dplyr)
 
 
-stages <- c("<select>", list.files("data"))
+f <- list.files("data")
+path_to_load <- c("<select>", f[grepl(".*rds", f)])
 clusters <- c("<select>")
 genes <- c("<select>")
 
 object <- NULL
-
-clustering <- NULL
 
 clustering <- c(
 	"res.4.5",
@@ -25,7 +26,7 @@ clustering <- c(
 	"res.5"
 )
 
-files <- c(
+path <- c(
 	"zf6s_cc_filt.cluster.rds",
 	"zf10s_cc_filt.cluster.rds",
 	"zf14s_cc_filt.cluster.rds",
@@ -37,10 +38,27 @@ files <- c(
 	"zf3dpf_cc_filt.cluster.rds",
 	"zf5dpf_cc_filt.cluster.rds",
 	"zf8dpf_cc_filt.cluster4.rds",
-	"zf15dpf_PCAALL"
+	"zf15dpf_PCAALL.rds"
 )
 
-colors.to.use <- c(
+stage <- c(
+	"12 hpf",
+	"14 hpf",
+	"16 hpf",
+	"18 hpf",
+	"20 hpf",
+	"24 hpf",
+	"36 hpf",
+	"2 dpf",
+	"3 dpf",
+	"5 dpf",
+	"8 dpf",
+	"15 dpf"
+)
+
+clustering.data <<- data.frame(stage, path, clustering)
+
+colors.to.use <<- c(
 	"pink1",
 	"gold",
 	"cyan3",
@@ -144,4 +162,6 @@ colors.to.use <- c(
 	"blueviolet"
 )
 
-clustering.data <- data.frame(files, clustering)
+meta.data <<- read.csv("data/ZFBrainAtlasMaster.csv")
+meta.data <<- meta.data %>% select("STAGE", "CLUSTER", "ASSIGNED.CELL.TYPE.STATE", "ENRICHED.MARKERS")
+
