@@ -4,11 +4,11 @@ navbarPage("[INSERT TITLE]!",
 		   tabPanel("[INSERT SUBTITLE]",
 		   		 sidebarLayout(
 		   		 	sidebarPanel(
-		   		 		paste0("Seurat version used: ", seurat_version),
+		   		 		paste0("Seurat version used: ", seurat.version),
 		   		 		selectInput(
 		   		 			"path",
 		   		 			"Select file",
-		   		 			choices=path_to_load),
+		   		 			choices=path.to.load),
 		   		 		selectInput(
 		   		 			"cluster",
 		   		 			"Select cluster(s) -- n >= 1",

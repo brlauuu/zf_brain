@@ -1,12 +1,13 @@
 
 server <- function(input, output, session) {
 	get_clusters = reactive({
-		return(listClusters())
+		return(listClusters(input$path))
 	})
 
 	get_genes = reactive({
-		return()
+		return(listGenes())
 	})
+
 	observe({
 		input$path
 		print(paste0("Selected ", input$path))
@@ -44,10 +45,14 @@ server <- function(input, output, session) {
 		if ("all" %in% input$cluster) {
 			plotDimPlot(object)
 		} else {
+			selected.clusters <- meta.data %>%
+				filter(CLUSTER.NAME %in% input$cluster) %>%
+				select(CLUSTER) %>% 
+				unlist()
 			plotDimPlot(
 				SubsetData(
 					object,
-					cells.use = (object@ident %in% input$cluster)
+					cells.use = (object@ident %in% selected.clusters)
 				)
 			)
 		}
@@ -63,10 +68,14 @@ server <- function(input, output, session) {
 		if ("all" %in% input$cluster) {
 			plotViolinPlot(object, input$gene)
 		} else {
+			selected.clusters <- meta.data %>%
+				filter(CLUSTER.NAME %in% input$cluster) %>%
+				select(CLUSTER) %>% 
+				unlist()
 			plotViolinPlot(
 				SubsetData(
 					object,
-					cells.use = (object@ident %in% input$cluster)
+					cells.use = (object@ident %in% selected.clusters)
 				),
 				input$gene
 			)
@@ -90,10 +99,14 @@ server <- function(input, output, session) {
 		if ("all" %in% input$cluster) {
 			plotFeaturePlot(object, input$overlay, input$gene)
 		} else {
+			selected.clusters <- meta.data %>%
+				filter(CLUSTER.NAME %in% input$cluster) %>%
+				select(CLUSTER) %>% 
+				unlist()
 			plotFeaturePlot(
 				SubsetData(
 					object,
-					cells.use = (object@ident %in% input$cluster)
+					cells.use = (object@ident %in% selected.clusters)
 				),
 				input$overlay,
 				input$gene
@@ -114,15 +127,19 @@ server <- function(input, output, session) {
 				subset=(
 					STAGE==clustering.data$stage[clustering.data$path==input$path]
 				)
-			)
+			) %>% select(STAGE, CLUSTER.NAME, ENRICHED.MARKERS)
 		} else {
+			selected.clusters <- meta.data %>%
+				filter(CLUSTER.NAME %in% input$cluster) %>%
+				select(CLUSTER) %>% 
+				unlist()
 			subset(
 				meta.data,
 				subset=(
 					STAGE==clustering.data$stage[clustering.data$path==input$path]
-					& CLUSTER %in% input$cluster
+					& CLUSTER %in% selected.clusters
 				)
-			)
+			)  %>% select(STAGE, CLUSTER.NAME, ENRICHED.MARKERS)
 		}
 	})
 }

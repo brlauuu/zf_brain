@@ -3,12 +3,12 @@ library(Seurat)
 library(DT)
 library(dplyr)
 
-seurat_version <<- packageVersion("Seurat")
+seurat.version <<- packageVersion("Seurat")
 
 print(paste0("Seurat version being used: ", seurat_version))
 
 f <- list.files("data")
-path_to_load <- c("<select>", f[grepl(".*rds", f)])
+path.to.load <- c("<select>", f[grepl(".*rds", f)])
 clusters <- c("<select>")
 genes <- c("<select>")
 
@@ -22,12 +22,19 @@ loadObject <- function(path) {
 	}
 }
 
-listClusters <- function () {
-	if (seurat_version > "2" && seurat_version < "3") {
-		return(c("all", levels(unique(object@ident))))
-	} else if (seurat_version > "3") {
-		return(c("all", levels(unique(object@active.ident))))
-	}
+listClusters <- function (path) {
+	# if (seurat_version > "2" && seurat_version < "3") {
+		return(
+			c(
+				"all",
+				meta.data %>%
+					filter(STAGE == clustering.data$stage[clustering.data$path==path]) %>%
+					select(CLUSTER.NAME)
+			)
+		)
+	# } else if (seurat_version > "3") {
+	# 	return(c("all", levels(unique(object@active.ident))))
+	# }
 }
 
 listGenes <- function() {
@@ -58,7 +65,7 @@ plotViolinPlot <- function(object, genes) {
 plotFeaturePlot <- function(object, overlay, genes) {
 	FeaturePlot(
 		object,
-		features = input$gene,
+		features = genes,
 		reduction.use = "tsne",
 		no.legend = F,
 		cols.use = c("lightgray", "blue"),
@@ -219,5 +226,7 @@ colors.to.use <<- c(
 )
 
 meta.data <<- read.csv("data/ZFBrainAtlasMaster.csv")
-meta.data <<- meta.data %>% select("STAGE", "CLUSTER", "ASSIGNED.CELL.TYPE.STATE", "ENRICHED.MARKERS")
-
+meta.data <<- meta.data %>% 
+	select("STAGE", "CLUSTER", "ASSIGNED.CELL.TYPE.STATE", "ENRICHED.MARKERS")
+meta.data <<-  meta.data %>% 
+	mutate(CLUSTER.NAME = paste(CLUSTER, ASSIGNED.CELL.TYPE.STATE, sep=" - "))
