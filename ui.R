@@ -4,6 +4,7 @@ navbarPage("[INSERT TITLE]!",
 		   tabPanel("[INSERT SUBTITLE]",
 		   		 sidebarLayout(
 		   		 	sidebarPanel(
+		   		 		paste0("Seurat version used: ", seurat_version),
 		   		 		selectInput(
 		   		 			"path",
 		   		 			"Select file",
@@ -26,12 +27,11 @@ navbarPage("[INSERT TITLE]!",
 		   		 	),
 		   		 	mainPanel(
 		   		 		fluidRow(
-   		 				   withSpinner(DT::dataTableOutput("metaTable")),
-   		 				   withSpinner(plotOutput("umap")),
-   		 				   withSpinner(plotOutput("umap_gene")),
-   		 				   withSpinner(plotOutput("violin"))
+							withSpinner(DT::dataTableOutput("metaTable")),
+							withSpinner(plotOutput("umap")),
+							withSpinner(plotOutput("umap_gene")),
+							withSpinner(plotOutput("violin"))
 		   		 		)
-		   		 		
 		   		 	)
 		   		 )
 		   ),

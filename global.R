@@ -3,6 +3,9 @@ library(Seurat)
 library(DT)
 library(dplyr)
 
+seurat_version <<- packageVersion("Seurat")
+
+print(paste0("Seurat version being used: ", seurat_version))
 
 f <- list.files("data")
 path_to_load <- c("<select>", f[grepl(".*rds", f)])
@@ -10,6 +13,59 @@ clusters <- c("<select>")
 genes <- c("<select>")
 
 object <- NULL
+
+loadObject <- function(path) {
+	if (seurat_version > "2" && seurat_version < "3") {
+		object <<- readRDS(paste0("data/", path))
+	} else if (seurat_version > "3") {
+		object <<- UpdateSeuratObject(readRDS(paste0("data/", path)))
+	}
+}
+
+listClusters <- function () {
+	if (seurat_version > "2" && seurat_version < "3") {
+		return(c("all", levels(unique(object@ident))))
+	} else if (seurat_version > "3") {
+		return(c("all", levels(unique(object@active.ident))))
+	}
+}
+
+listGenes <- function() {
+	if (seurat_version > "2" && seurat_version < "3") {
+		return(c("<select>", sort(rownames(object@raw.data))))
+	} else if (seurat_version > "3") {
+		return(c("<select>", sort(rownames(object))))
+	}
+}
+
+plotDimPlot <- function(object) {
+	DimPlot(
+		object,
+		reduction.use = "tsne",
+		do.label = T,
+		cols.use = colors.to.use
+	)
+}
+
+plotViolinPlot <- function(object, genes) {
+	VlnPlot(
+		object,
+		features = genes,
+		cols.use = colors.to.use
+	)
+}
+
+plotFeaturePlot <- function(object, overlay, genes) {
+	FeaturePlot(
+		object,
+		features = input$gene,
+		reduction.use = "tsne",
+		no.legend = F,
+		cols.use = c("lightgray", "blue"),
+		overlay = ((overlay == 1) && (length(genes) == 2))
+	)
+}
+
 
 clustering <- c(
 	"res.4.5",
