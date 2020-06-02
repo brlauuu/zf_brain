@@ -1,10 +1,10 @@
 library(markdown)
 
-navbarPage("[INSERT TITLE]!",
+navbarPage("Emergence of neuronal diversity during vertebrate brain development",
 		   tabPanel("[INSERT SUBTITLE]",
 		   		 sidebarLayout(
 		   		 	sidebarPanel(
-		   		 		paste0("Seurat version used: ", seurat.version),
+		   		 		helpText(paste0("Seurat v", seurat.version)),
 		   		 		selectInput(
 		   		 			"path",
 		   		 			"Select file",
@@ -23,11 +23,23 @@ navbarPage("[INSERT TITLE]!",
 							label = "2 gene plot:",
 							choices = list("Overlay" = 1,"Separate" = 2)
 		   		 		),
-		   		 		width = "3"
+						downloadButton(
+							"downloadMainTsne", 
+							label = "Clusters tSNE"
+						),
+						downloadButton(
+						   	"downloadGeneOverlay", 
+						   	label = "Gene Expr tSNE"
+						),
+						downloadButton(
+					   		"downloadViolin", 
+					   		label = "Violin Plot"
+						),
+						width = "3"
 		   		 	),
 		   		 	mainPanel(
 		   		 		fluidRow(
-							withSpinner(DT::dataTableOutput("metaTable")),
+		   		 			withSpinner(DT::dataTableOutput("metaTable")),
 							withSpinner(plotOutput("umap")),
 							withSpinner(plotOutput("umap_gene")),
 							withSpinner(plotOutput("violin"))

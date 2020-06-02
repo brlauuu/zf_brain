@@ -9,14 +9,10 @@ server <- function(input, output, session) {
 	})
 
 	observe({
-		input$path
 		print(paste0("Selected ", input$path))
-		validate(
-			need(
-				input$path != "<select>",
-				"Please select file to be laoded."
-			)
-		)
+		if (input$path == "<select>") {
+			return()
+		}
 		loadObject(input$path)
 		updateSelectInput(
 			session = session,
@@ -32,14 +28,8 @@ server <- function(input, output, session) {
 	output$umap <- renderPlot({
 		validate(
 			need(
-				input$path != "<select>",
-				"Please select file to be laoded."
-			)
-		)
-		validate(
-			need(
-				input$cluster != "<select>",
-				"Please select cluster(s) to be plotted."
+				input$path != "<select>" & input$cluster != "<select>",
+				"Please select file to be laoded and cluster to be plotted."
 			)
 		)
 		if ("all" %in% input$cluster) {
@@ -85,17 +75,10 @@ server <- function(input, output, session) {
 	output$umap_gene <- renderPlot({
 		validate(
 			need(
-				input$gene != "<select>",
-				"Please select gene to be plotted over given clusters."
+				input$gene != "<select>" && length(input$gene) < 3,
+				"Please select 1 or 2 gene(s) to be plotted over given clusters."
 			)
 		)
-		validate(
-			need(
-				length(input$gene) < 3,
-				"Please select 1 or 2 genes."
-			)
-		)
-		# FeaturePlot(object, feature = input$gene)
 		if ("all" %in% input$cluster) {
 			plotFeaturePlot(object, input$overlay, input$gene)
 		} else {
@@ -118,7 +101,7 @@ server <- function(input, output, session) {
 		validate(
 			need(
 				input$cluster != "<select>",
-				"Please select cluster(s)."
+				""
 			)
 		)
 		if ("all" %in% input$cluster) {
@@ -142,4 +125,91 @@ server <- function(input, output, session) {
 			)  %>% select(STAGE, CLUSTER.NAME, ENRICHED.MARKERS)
 		}
 	})
+	
+	output$downloadMainTsne <- downloadHandler(
+		filename = function() { paste("tSNE_snapshot", '.png', sep='') },
+		content = function(file) {
+			if ("all" %in% input$cluster) {
+				ggsave(
+					file, 
+					plot = plotDimPlot(object), 
+					device = "png"
+				)
+			} else {
+				selected.clusters <- meta.data %>%
+					filter(CLUSTER.NAME %in% input$cluster) %>%
+					select(CLUSTER) %>% 
+					unlist()
+				ggsave(
+					file, 
+					plot = plotDimPlot(
+						SubsetData(
+							object,
+							cells.use = (object@ident %in% selected.clusters)
+						)
+					), 
+					device = "png"
+				)
+			}
+		}
+	)
+
+	output$downloadGeneOverlay <- downloadHandler(
+		filename = function() { paste("cluster_expression_snapshot", '.png', sep='')},
+		content = function(file) {
+			if ("all" %in% input$cluster) {
+				ggsave(
+					file, 
+					plot = plotFeaturePlot(object, input$overlay, input$gene), 
+					device = "png"
+				)
+			} else {
+				selected.clusters <- meta.data %>%
+					filter(CLUSTER.NAME %in% input$cluster) %>%
+					select(CLUSTER) %>% 
+					unlist()
+				ggsave(
+					file, 
+					plot = plotFeaturePlot(
+						SubsetData(
+							object,
+							cells.use = (object@ident %in% selected.clusters)
+						),
+						input$overlay,
+						input$gene
+					), 
+					device = "png"
+				)
+			}
+		}
+	)
+	
+	output$downloadViolin <- downloadHandler(
+		filename = function() { paste("violoin_plot_snapshot", '.png', sep='')},
+		content = function(file) {
+			if ("all" %in% input$cluster) {
+				ggsave(
+					file, 
+					plot = pplotViolinPlot(object, input$gene),
+					device = "png"
+				)
+			} else {
+				selected.clusters <- meta.data %>%
+					filter(CLUSTER.NAME %in% input$cluster) %>%
+					select(CLUSTER) %>% 
+					unlist()
+				ggsave(
+					file, 
+					plot = plotViolinPlot(
+						SubsetData(
+							object,
+							cells.use = (object@ident %in% selected.clusters)
+						),
+						input$gene
+					),
+					device = "png"
+				)
+			}
+		}
+	)
 }

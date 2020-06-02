@@ -23,18 +23,14 @@ loadObject <- function(path) {
 }
 
 listClusters <- function (path) {
-	# if (seurat_version > "2" && seurat_version < "3") {
-		return(
-			c(
-				"all",
-				meta.data %>%
-					filter(STAGE == clustering.data$stage[clustering.data$path==path]) %>%
-					select(CLUSTER.NAME)
-			)
+	return(
+		c(
+			"all",
+			meta.data %>%
+				filter(STAGE == clustering.data$stage[clustering.data$path==path]) %>%
+				select(CLUSTER.NAME)
 		)
-	# } else if (seurat_version > "3") {
-	# 	return(c("all", levels(unique(object@active.ident))))
-	# }
+	)
 }
 
 listGenes <- function() {
