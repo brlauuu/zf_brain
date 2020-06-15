@@ -8,7 +8,7 @@ Co-corresponding authors. Email: bushranraj@gmail.com(B.R.); schier@mcb.harvard.
 
 Neurogenesis  in  the  vertebrate  brain  comprises  many  steps  ranging  from  the  proliferation  of progenitors to the differentiation and maturation of neurons. Although these processes are highly regulated,  the  landscape  of  transcriptional  changes  and  progenitoridentities  underlying  brain development are poorly characterized. Here, we describe the first developmental single-cell RNA-seq catalog of more than 200,000 zebrafish brain cells encompassing 12 stages from 12 hours post-fertilization to 15 days post-fertilization. We characterize known and novel gene markers for more than 800 clusters across these timepoints. Our results capture the temporal dynamics of multiple neurogenic waves from embryo to larva that expand neuronal diversity from ~20cell types at 12hpf to ~100 cell types at 15 dpf. We find that most embryonic neural progenitor states are transient and transcriptionally distinct from long-lasting neural progenitors of post-embryonic stages.  Furthermore,  we  reconstruct  cell  specification  trajectories for  the  retina  and hypothalamus, and identify gene expression cascades and novel markers. Our analysis reveal that  late-stage  retinal  neural  progenitors  transcriptionally  overlap  cell  states  observed  in  the embryo, while hypothalamic neural progenitors become progressively distinct with developmental time.  These  data  provide  the  first  comprehensive  single-cell  transcriptomic  time  course  for vertebrate  brain  development  and  suggest  distinct  neurogenic  regulatory  paradigms  between different stages and tissues. 
 
-# Exploring the dataset using R Shiny App
+## Exploring the dataset using R Shiny App
 
 Thank you for using this ShinyApp for exploring data from the work cited above.
 In order to use the app, you have to follow the following steps:
@@ -25,7 +25,7 @@ Seurat version as well. In case you want to use `v2.3.4` of Seurat, see
 instructions on how to set it up here
 [https://satijalab.org/seurat/install.html](https://satijalab.org/seurat/install.html).
 
-## Using ShinyApp
+### Using ShinyApp
 
 When you start the app you can see 3 tabs. One for exploring the `Seurat`
 generated objects, one for exploring `URD` generated objects and this page.
@@ -40,12 +40,18 @@ can select metadata of interest that you would like to explore.
 For both libraries, on the bottom of the sidebar, you can find download buttons
 for each of th plots.
 
-## `Seurat`
+### `Seurat`
 
 * Select all, one or several clusters to plot on the tSNE coordinates of.
 * Select one, two (combined tSNE plot) or several (sequential violin plot)
 genes to plot.
 
-## `URD`
+### `URD`
 
-* Select one or two genes to plot on the tree.
+* Select one or two features to plot on the tree. Note: discrete and float
+features cannot be combined.
+
+## Error troubleshooting
+
+In case of unexpected behavior, please consult first the log in the R console.
+If that did not help, do not hesitate to contact me at dorde.relic@unibas.ch.
