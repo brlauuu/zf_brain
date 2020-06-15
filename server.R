@@ -133,7 +133,10 @@ server <- function(input, output, session) {
 				ggsave(
 					file, 
 					plot = plotDimPlot(object), 
-					device = "png"
+					width = as.double(input$width),
+					height = as.double(input$height),
+					units = input$units,
+					device = input$format
 				)
 			} else {
 				selected.clusters <- meta.data %>%
@@ -147,8 +150,11 @@ server <- function(input, output, session) {
 							object,
 							cells.use = (object@ident %in% selected.clusters)
 						)
-					), 
-					device = "png"
+					),
+					width = as.double(input$width),
+					height = as.double(input$height),
+					units = input$units,
+					device = input$format
 				)
 			}
 		}
@@ -161,7 +167,10 @@ server <- function(input, output, session) {
 				ggsave(
 					file, 
 					plot = plotFeaturePlot(object, input$overlay, input$gene), 
-					device = "png"
+					width = as.double(input$width),
+					height = as.double(input$height),
+					units = input$units,
+					device = input$format
 				)
 			} else {
 				selected.clusters <- meta.data %>%
@@ -178,7 +187,10 @@ server <- function(input, output, session) {
 						input$overlay,
 						input$gene
 					), 
-					device = "png"
+					width = as.double(input$width),
+					height = as.double(input$height),
+					units = input$units,
+					device = input$format
 				)
 			}
 		}
@@ -190,8 +202,11 @@ server <- function(input, output, session) {
 			if ("all" %in% input$cluster) {
 				ggsave(
 					file, 
-					plot = pplotViolinPlot(object, input$gene),
-					device = "png"
+					plot = plotViolinPlot(object, input$gene),
+					width = as.double(input$width),
+					height = as.double(input$height),
+					units = input$units,
+					device = input$format
 				)
 			} else {
 				selected.clusters <- meta.data %>%
@@ -207,7 +222,10 @@ server <- function(input, output, session) {
 						),
 						input$gene
 					),
-					device = "png"
+					width = as.double(input$width),
+					height = as.double(input$height),
+					units = input$units,
+					device = input$format
 				)
 			}
 		}

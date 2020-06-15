@@ -2,22 +2,26 @@ library(shinycssloaders)
 library(Seurat)
 library(DT)
 library(dplyr)
+library(ggplot2)
 
 seurat.version <<- packageVersion("Seurat")
 
-print(paste0("Seurat version being used: ", seurat_version))
+print(paste0("Seurat version being used: ", seurat.version))
 
 f <- list.files("data")
 path.to.load <- c("<select>", f[grepl(".*rds", f)])
 clusters <- c("<select>")
 genes <- c("<select>")
 
+units <- c("mm", "cm", "in")
+device <- c("png", "eps", "ps", "tex", "pdf", "jpeg", "tiff", "bmp", "svg")
+
 object <- NULL
 
 loadObject <- function(path) {
-	if (seurat_version > "2" && seurat_version < "3") {
+	if (seurat.version > "2" && seurat.version < "3") {
 		object <<- readRDS(paste0("data/", path))
-	} else if (seurat_version > "3") {
+	} else if (seurat.version > "3") {
 		object <<- UpdateSeuratObject(readRDS(paste0("data/", path)))
 	}
 }
@@ -34,41 +38,73 @@ listClusters <- function (path) {
 }
 
 listGenes <- function() {
-	if (seurat_version > "2" && seurat_version < "3") {
+	if (seurat.version > "2" && seurat.version < "3") {
 		return(c("<select>", sort(rownames(object@raw.data))))
-	} else if (seurat_version > "3") {
+	} else if (seurat.version > "3") {
 		return(c("<select>", sort(rownames(object))))
 	}
 }
 
 plotDimPlot <- function(object) {
-	DimPlot(
-		object,
-		reduction.use = "tsne",
-		do.label = T,
-		cols.use = colors.to.use
-	)
+	if (seurat.version > "2" && seurat.version < "3") {
+		DimPlot(
+			object,
+			reduction.use = "tsne",
+			do.label = T,
+			cols.use = colors.to.use
+		)
+	} else if (seurat.version > "3") {
+		DimPlot(
+			object,
+			reduction = "tsne",
+			label = T,
+			cols = colors.to.use
+		)
+	}
 }
 
 plotViolinPlot <- function(object, genes) {
-	VlnPlot(
-		object,
-		features = genes,
-		cols.use = colors.to.use
-	)
+	if (seurat.version > "2" && seurat.version < "3") {
+		VlnPlot(
+			object,
+			features = genes,
+			cols.use = colors.to.use
+		)
+	} else if (seurat.version > "3") {
+		VlnPlot(
+			object,
+			features = genes,
+			cols = colors.to.use
+		)
+	}
 }
 
 plotFeaturePlot <- function(object, overlay, genes) {
-	FeaturePlot(
-		object,
-		features = genes,
-		reduction.use = "tsne",
-		no.legend = F,
-		cols.use = c("lightgray", "blue"),
-		overlay = ((overlay == 1) && (length(genes) == 2))
-	)
+	if (seurat.version > "2" && seurat.version < "3") {
+		FeaturePlot(
+			object,
+			features = genes,
+			reduction.use = "tsne",
+			no.legend = F,
+			cols.use = c("lightgray", "blue"),
+			overlay = ((overlay == 1) && (length(genes) == 2))
+		)
+	} else if (seurat.version > "3") {
+		FeaturePlot(
+			object,
+			features = genes,
+			reduction = "tsne",
+			blend = ((overlay == 1) && (length(genes) == 2))
+		)
+	}
 }
 
+
+meta.data <<- read.csv("data/ZFBrainAtlasMaster.csv")
+meta.data <<- meta.data %>%
+	select("STAGE", "CLUSTER", "ASSIGNED.CELL.TYPE.STATE", "ENRICHED.MARKERS")
+meta.data <<-  meta.data %>%
+	mutate(CLUSTER.NAME = paste(CLUSTER, ASSIGNED.CELL.TYPE.STATE, sep=" - "))
 
 clustering <- c(
 	"res.4.5",
@@ -220,9 +256,3 @@ colors.to.use <<- c(
 	"firebrick2",
 	"blueviolet"
 )
-
-meta.data <<- read.csv("data/ZFBrainAtlasMaster.csv")
-meta.data <<- meta.data %>% 
-	select("STAGE", "CLUSTER", "ASSIGNED.CELL.TYPE.STATE", "ENRICHED.MARKERS")
-meta.data <<-  meta.data %>% 
-	mutate(CLUSTER.NAME = paste(CLUSTER, ASSIGNED.CELL.TYPE.STATE, sep=" - "))

@@ -1,7 +1,7 @@
 library(markdown)
 
 navbarPage("Emergence of neuronal diversity during vertebrate brain development",
-		   tabPanel("[INSERT SUBTITLE]",
+		   tabPanel("Seurat",
 		   		 sidebarLayout(
 		   		 	sidebarPanel(
 		   		 		helpText(paste0("Seurat v", seurat.version)),
@@ -23,16 +23,26 @@ navbarPage("Emergence of neuronal diversity during vertebrate brain development"
 							label = "2 gene plot:",
 							choices = list("Overlay" = 1,"Separate" = 2)
 		   		 		),
+						selectInput(
+							"format",
+							"Downlaod format",
+							choices=device),
+						selectInput(
+							"units",
+							"Size units",
+							choices=units),
+						textInput("height", "height", "200"),
+						textInput("width", "width", "400"),
 						downloadButton(
-							"downloadMainTsne", 
+							"downloadMainTsne",
 							label = "Clusters tSNE"
 						),
 						downloadButton(
-						   	"downloadGeneOverlay", 
+						   	"downloadGeneOverlay",
 						   	label = "Gene Expr tSNE"
 						),
 						downloadButton(
-					   		"downloadViolin", 
+					   		"downloadViolin",
 					   		label = "Violin Plot"
 						),
 						width = "3"
