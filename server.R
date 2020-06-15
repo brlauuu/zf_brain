@@ -127,7 +127,7 @@ server <- function(input, output, session) {
 	})
 	
 	output$downloadMainTsne <- downloadHandler(
-		filename = function() { paste("tSNE_snapshot", '.png', sep='') },
+		filename = function() { "tSNE_snapshot" },
 		content = function(file) {
 			if ("all" %in% input$cluster) {
 				ggsave(
@@ -161,7 +161,7 @@ server <- function(input, output, session) {
 	)
 
 	output$downloadGeneOverlay <- downloadHandler(
-		filename = function() { paste("cluster_expression_snapshot", '.png', sep='')},
+		filename = function() { "cluster_expression_snapshot" },
 		content = function(file) {
 			if ("all" %in% input$cluster) {
 				ggsave(
@@ -197,7 +197,7 @@ server <- function(input, output, session) {
 	)
 	
 	output$downloadViolin <- downloadHandler(
-		filename = function() { paste("violoin_plot_snapshot", '.png', sep='')},
+		filename = function() { "violoin_plot_snapshot" },
 		content = function(file) {
 			if ("all" %in% input$cluster) {
 				ggsave(
