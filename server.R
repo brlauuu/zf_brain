@@ -1,10 +1,14 @@
 
 server <- function(input, output, session) {
-	get_clusters = reactive({
+
+	##############
+	# Seurat
+	##############
+	getClusters = reactive({
 		return(listClusters(input$path))
 	})
 
-	get_genes = reactive({
+	getGenes = reactive({
 		return(listGenes())
 	})
 
@@ -17,18 +21,18 @@ server <- function(input, output, session) {
 		updateSelectInput(
 			session = session,
 			inputId = "cluster",
-			choices = get_clusters(),
+			choices = getClusters(),
 			selected = "all")
 		updateSelectInput(
 			session = session,
 			inputId = "gene",
-			choices = get_genes())
+			choices = getGenes())
 	})
 
 	output$umap <- renderPlot({
 		validate(
 			need(
-				input$path != "<select>" & input$cluster != "<select>",
+				input$path != "<select>" && input$cluster != "<select>",
 				"Please select file to be laoded and cluster to be plotted."
 			)
 		)
@@ -37,7 +41,7 @@ server <- function(input, output, session) {
 		} else {
 			selected.clusters <- meta.data %>%
 				filter(CLUSTER.NAME %in% input$cluster) %>%
-				select(CLUSTER) %>% 
+				select(CLUSTER) %>%
 				unlist()
 			plotDimPlot(
 				SubsetData(
@@ -60,7 +64,7 @@ server <- function(input, output, session) {
 		} else {
 			selected.clusters <- meta.data %>%
 				filter(CLUSTER.NAME %in% input$cluster) %>%
-				select(CLUSTER) %>% 
+				select(CLUSTER) %>%
 				unlist()
 			plotViolinPlot(
 				SubsetData(
@@ -84,7 +88,7 @@ server <- function(input, output, session) {
 		} else {
 			selected.clusters <- meta.data %>%
 				filter(CLUSTER.NAME %in% input$cluster) %>%
-				select(CLUSTER) %>% 
+				select(CLUSTER) %>%
 				unlist()
 			plotFeaturePlot(
 				SubsetData(
@@ -114,7 +118,7 @@ server <- function(input, output, session) {
 		} else {
 			selected.clusters <- meta.data %>%
 				filter(CLUSTER.NAME %in% input$cluster) %>%
-				select(CLUSTER) %>% 
+				select(CLUSTER) %>%
 				unlist()
 			subset(
 				meta.data,
@@ -125,14 +129,14 @@ server <- function(input, output, session) {
 			)  %>% select(STAGE, CLUSTER.NAME, ENRICHED.MARKERS)
 		}
 	})
-	
+
 	output$downloadMainTsne <- downloadHandler(
-		filename = function() { "tSNE_snapshot" },
+		filename = function() { paste0("tSNE_snapshot.", input$format) },
 		content = function(file) {
 			if ("all" %in% input$cluster) {
 				ggsave(
-					file, 
-					plot = plotDimPlot(object), 
+					file,
+					plot = plotDimPlot(object),
 					width = as.double(input$width),
 					height = as.double(input$height),
 					units = input$units,
@@ -141,10 +145,10 @@ server <- function(input, output, session) {
 			} else {
 				selected.clusters <- meta.data %>%
 					filter(CLUSTER.NAME %in% input$cluster) %>%
-					select(CLUSTER) %>% 
+					select(CLUSTER) %>%
 					unlist()
 				ggsave(
-					file, 
+					file,
 					plot = plotDimPlot(
 						SubsetData(
 							object,
@@ -161,12 +165,12 @@ server <- function(input, output, session) {
 	)
 
 	output$downloadGeneOverlay <- downloadHandler(
-		filename = function() { "cluster_expression_snapshot" },
+		filename = function() { paste0("cluster_expression_snapshot.", input$format) },
 		content = function(file) {
 			if ("all" %in% input$cluster) {
 				ggsave(
-					file, 
-					plot = plotFeaturePlot(object, input$overlay, input$gene), 
+					file,
+					plot = plotFeaturePlot(object, input$overlay, input$gene),
 					width = as.double(input$width),
 					height = as.double(input$height),
 					units = input$units,
@@ -175,10 +179,10 @@ server <- function(input, output, session) {
 			} else {
 				selected.clusters <- meta.data %>%
 					filter(CLUSTER.NAME %in% input$cluster) %>%
-					select(CLUSTER) %>% 
+					select(CLUSTER) %>%
 					unlist()
 				ggsave(
-					file, 
+					file,
 					plot = plotFeaturePlot(
 						SubsetData(
 							object,
@@ -186,7 +190,7 @@ server <- function(input, output, session) {
 						),
 						input$overlay,
 						input$gene
-					), 
+					),
 					width = as.double(input$width),
 					height = as.double(input$height),
 					units = input$units,
@@ -195,13 +199,13 @@ server <- function(input, output, session) {
 			}
 		}
 	)
-	
+
 	output$downloadViolin <- downloadHandler(
-		filename = function() { "violoin_plot_snapshot" },
+		filename = function() { paste0("violoin_plot_snapshot.", input$format) },
 		content = function(file) {
 			if ("all" %in% input$cluster) {
 				ggsave(
-					file, 
+					file,
 					plot = plotViolinPlot(object, input$gene),
 					width = as.double(input$width),
 					height = as.double(input$height),
@@ -211,10 +215,10 @@ server <- function(input, output, session) {
 			} else {
 				selected.clusters <- meta.data %>%
 					filter(CLUSTER.NAME %in% input$cluster) %>%
-					select(CLUSTER) %>% 
+					select(CLUSTER) %>%
 					unlist()
 				ggsave(
-					file, 
+					file,
 					plot = plotViolinPlot(
 						SubsetData(
 							object,
@@ -226,6 +230,85 @@ server <- function(input, output, session) {
 					height = as.double(input$height),
 					units = input$units,
 					device = input$format
+				)
+			}
+		}
+	)
+
+	##############
+	# URD
+	##############
+	getFeaturesURD = reactive({
+		return(listFeaturesURD())
+	})
+
+	observe({
+		print(paste0("Selected ", input$path.urd))
+		if (input$path.urd == "<select>") {
+			return()
+		}
+		loadObjectURD(input$path.urd)
+		updateSelectInput(
+			session = session,
+			inputId = "feature.urd",
+			choices = getFeaturesURD())
+	})
+
+	output$tree <- renderPlot({
+		validate(
+			need(
+				input$path.urd != "<select>",
+				"Please select file to be laoded."
+			)
+		)
+		validate(
+			need(
+				length(input$feature.urd) < 3 && length(input$feature.urd) > 0,
+				"Select at least 1 or 2 features to be plotted on the tree."
+			)
+		)
+		if (length(input$feature.urd) < 2) {
+			plotTree(
+				object.urd,
+				input$feature.urd
+			)
+		} else {
+			plotTreeDual(
+				object.urd,
+				input$feature.urd[[1]],
+				input$feature.urd[[2]]
+			)
+
+		}
+	})
+
+	output$downloadTree <- downloadHandler(
+		filename = function() { paste0("tree_plot_snapshot.", input$format.urd) },
+		content = function(file) {
+			if (length(input$feature.urd) < 2) {
+				ggsave(
+					file,
+					plot = plotTree(
+						object.urd,
+						input$feature.urd
+					),
+					width = as.double(input$width.urd),
+					height = as.double(input$height.urd),
+					units = input$units.urd,
+					device = input$format.urd
+				)
+			} else {
+				ggsave(
+					file,
+					plot = plotTreeDual(
+						object.urd,
+						input$feature.urd[[1]],
+						input$feature.urd[[2]]
+					),
+					width = as.double(input$width.urd),
+					height = as.double(input$height.urd),
+					units = input$units.urd,
+					device = input$format.urd
 				)
 			}
 		}

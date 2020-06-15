@@ -3,8 +3,10 @@ library(Seurat)
 library(DT)
 library(dplyr)
 library(ggplot2)
+library(URD)
 
 seurat.version <<- packageVersion("Seurat")
+urd.version <<- packageVersion("URD")
 
 print(paste0("Seurat version being used: ", seurat.version))
 
@@ -13,36 +15,83 @@ path.to.load <- c("<select>", f[grepl(".*rds", f)])
 clusters <- c("<select>")
 genes <- c("<select>")
 
+features.urd <- c("<select>")
+
 units <- c("mm", "cm", "in")
 device <- c("png", "eps", "ps", "tex", "pdf", "jpeg", "tiff", "bmp", "svg")
 
 object <- NULL
+object.urd <- NULL
 
 loadObject <- function(path) {
-	if (seurat.version > "2" && seurat.version < "3") {
-		object <<- readRDS(paste0("data/", path))
-	} else if (seurat.version > "3") {
-		object <<- UpdateSeuratObject(readRDS(paste0("data/", path)))
-	}
+	tryCatch({
+		if (seurat.version > "2" && seurat.version < "3") {
+			object <<- readRDS(paste0("data/", path))
+		} else if (seurat.version > "3") {
+			object <<- UpdateSeuratObject(readRDS(paste0("data/", path)))
+		}
+		print(paste0("Loaded Seurat object from path: ", "data/", path))
+	}, error=function(cond) {
+		print(paste("Invalid Seurat file loaded:", "data/", path))
+		print("Here's the original error message:")
+		print(cond)
+		object <<- NULL
+	})
+}
+
+loadObjectURD <- function(path) {
+	object.urd <<- readRDS(paste0("data/", path))
+	print(paste0("Loaded URD object from path: ", "data/", path))
 }
 
 listClusters <- function (path) {
-	return(
-		c(
-			"all",
-			meta.data %>%
-				filter(STAGE == clustering.data$stage[clustering.data$path==path]) %>%
-				select(CLUSTER.NAME)
+	tryCatch({
+		return(
+			c(
+				"all",
+				meta.data %>%
+					filter(STAGE == clustering.data$stage[clustering.data$path==path]) %>%
+					select(CLUSTER.NAME)
+			)
 		)
-	)
+	}, error=function(cond) {
+		print(paste("Invalid Seurat file loaded:", "data/", path))
+		print("Here's the original error message:")
+		print(cond)
+		return("<select>")
+	})
 }
 
 listGenes <- function() {
-	if (seurat.version > "2" && seurat.version < "3") {
-		return(c("<select>", sort(rownames(object@raw.data))))
-	} else if (seurat.version > "3") {
-		return(c("<select>", sort(rownames(object))))
-	}
+	tryCatch({
+		if (seurat.version > "2" && seurat.version < "3") {
+			return(c("<select>", sort(rownames(object@raw.data))))
+		} else if (seurat.version > "3") {
+			return(c("<select>", sort(rownames(object))))
+		}
+	}, error=function(cond) {
+		print(paste("Invalid Seurat file loaded:", "data/", path))
+		print("Here's the original error message:")
+		print(cond)
+		return("<select>")
+	})
+}
+
+listFeaturesURD <- function() {
+	tryCatch({
+		return(
+			c(
+				"pseudotime",
+				colnames(object.urd@meta),
+				rownames(object.urd@logupx.data)
+			)
+		)
+	}, error=function(cond) {
+		print(paste("Invalid URD file loaded:", "data/", path))
+		print("Here's the original error message:")
+		print(cond)
+		return("<select>")
+	})
 }
 
 plotDimPlot <- function(object) {
@@ -98,7 +147,6 @@ plotFeaturePlot <- function(object, overlay, genes) {
 		)
 	}
 }
-
 
 meta.data <<- read.csv("data/ZFBrainAtlasMaster.csv")
 meta.data <<- meta.data %>%

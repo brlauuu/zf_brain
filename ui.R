@@ -57,6 +57,42 @@ navbarPage("Emergence of neuronal diversity during vertebrate brain development"
 		   		 	)
 		   		 )
 		   ),
+		   tabPanel("URD",
+		   		 sidebarLayout(
+		   		 	sidebarPanel(
+		   		 		helpText(paste0("URD v", urd.version)),
+		   		 		selectInput(
+		   		 			"path.urd",
+		   		 			"Select file",
+		   		 			choices=path.to.load),
+		   		 		selectInput(
+		   		 			"feature.urd",
+		   		 			"Select feature(s)",
+		   		 			choices=features.urd,
+		   		 			multiple = T),
+		   		 		selectInput(
+		   		 			"format.urd",
+		   		 			"Downlaod format",
+		   		 			choices=device),
+		   		 		selectInput(
+		   		 			"units.urd",
+		   		 			"Size units",
+		   		 			choices=units),
+		   		 		textInput("height.urd", "height", "200"),
+		   		 		textInput("width.urd", "width", "400"),
+		   		 		downloadButton(
+		   		 			"downloadTree",
+		   		 			label = "Tree"
+		   		 		),
+		   		 		width = "3"
+		   		 	),
+		   		 	mainPanel(
+		   		 		fluidRow(
+		   		 			withSpinner(plotOutput("tree")),
+		   		 		)
+		   		 	)
+		   		 )
+		   ),
    		   tabPanel("About",
    		   		 includeMarkdown("README.md")
    		   )
