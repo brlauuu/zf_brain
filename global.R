@@ -9,6 +9,7 @@ seurat.version <<- packageVersion("Seurat")
 urd.version <<- packageVersion("URD")
 
 print(paste0("Seurat version being used: ", seurat.version))
+print(paste0("URD version being used: ", urd.version))
 
 f <- list.files("data")
 path.to.load <- c("<select>", f[grepl(".*rds", f)])

@@ -1,6 +1,7 @@
 library(markdown)
 
-navbarPage("Emergence of neuronal diversity during vertebrate brain development",
+shinyUI(
+	navbarPage("Emergence of neuronal diversity during vertebrate brain development",
 		   tabPanel("Seurat",
 		   		 sidebarLayout(
 		   		 	sidebarPanel(
@@ -96,5 +97,6 @@ navbarPage("Emergence of neuronal diversity during vertebrate brain development"
    		   tabPanel("About",
    		   		 includeMarkdown("README.md")
    		   )
+	)
 )
 
