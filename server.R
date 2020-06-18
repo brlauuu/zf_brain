@@ -263,14 +263,14 @@ shinyServer(
 		)
 		validate(
 			need(
-				length(input$feature.urd) < 3 && length(input$feature.urd) > 0,
-				"Select at least 1 or 2 features to be plotted on the tree."
+				length(input$feature.urd) < 3,
+				"Select at least up to 2 features to be plotted on the tree."
 			)
 		)
 		if (length(input$feature.urd) < 2) {
 			plotTree(
 				object.urd,
-				input$feature.urd
+				if (length(input$feature.urd) == 1) input$feature.urd else "segment"
 			)
 		} else {
 			plotTreeDual(
