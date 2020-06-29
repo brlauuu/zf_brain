@@ -89,7 +89,7 @@ shinyUI(
 		   		 	),
 		   		 	mainPanel(
 		   		 		fluidRow(
-		   		 			withSpinner(plotOutput("tree")),
+		   		 			withSpinner(plotOutput("tree"))
 		   		 		)
 		   		 	)
 		   		 )
