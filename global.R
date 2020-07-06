@@ -163,7 +163,7 @@ plotFeaturePlot <- function(object, sel.clusters, overlay, genes) {
 			features = genes,
 			reduction.use = "tsne",
 			no.legend = F,
-			cols.use = c("lightgray", "blue"),
+			cols.use = if (overlay == 1) c("green", "red") else c("lightgray", "blue"),
 			overlay = ((overlay == 1) && (length(genes) == 2))
 		)
 	} else if (seurat.version > "3") {
