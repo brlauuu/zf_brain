@@ -95,17 +95,40 @@ listFeaturesURD <- function() {
 	})
 }
 
-plotDimPlot <- function(object) {
+object.subset <- function(object, sel.clusters) {
+	if (!"all" %in% sel.clusters) {
+		selected.clusters <- meta.data %>%
+			filter(CLUSTER.NAME %in% sel.clusters) %>%
+			select(CLUSTER) %>%
+			unlist()
+		if (seurat.version > "2" && seurat.version < "3") {
+			return(
+				SubsetData(
+					object,
+					cells.use = (object@ident %in% selected.clusters)
+				)
+			)
+		} else if (seurat.version > "3") {
+			return(subset(object, idents = c(selected.clusters)))
+		}
+	} else {
+		return(object)
+	}
+}
+
+plotDimPlot <- function(object, sel.clusters) {
+	plotting.object <- object.subset(object, sel.clusters)
+	
 	if (seurat.version > "2" && seurat.version < "3") {
 		DimPlot(
-			object,
+			plotting.object,
 			reduction.use = "tsne",
 			do.label = T,
 			cols.use = colors.to.use
 		)
 	} else if (seurat.version > "3") {
 		DimPlot(
-			object,
+			plotting.object,
 			reduction = "tsne",
 			label = T,
 			cols = colors.to.use
@@ -113,26 +136,30 @@ plotDimPlot <- function(object) {
 	}
 }
 
-plotViolinPlot <- function(object, genes) {
+plotViolinPlot <- function(object, sel.clusters, genes) {
+	plotting.object <- object.subset(object, sel.clusters)
+
 	if (seurat.version > "2" && seurat.version < "3") {
 		VlnPlot(
-			object,
+			plotting.object,
 			features = genes,
 			cols.use = colors.to.use
 		)
 	} else if (seurat.version > "3") {
 		VlnPlot(
-			object,
+			plotting.object,
 			features = genes,
 			cols = colors.to.use
 		)
 	}
 }
 
-plotFeaturePlot <- function(object, overlay, genes) {
+plotFeaturePlot <- function(object, sel.clusters, overlay, genes) {
+	plotting.object <- object.subset(object, sel.clusters)
+	
 	if (seurat.version > "2" && seurat.version < "3") {
 		FeaturePlot(
-			object,
+			plotting.object,
 			features = genes,
 			reduction.use = "tsne",
 			no.legend = F,
@@ -141,7 +168,7 @@ plotFeaturePlot <- function(object, overlay, genes) {
 		)
 	} else if (seurat.version > "3") {
 		FeaturePlot(
-			object,
+			plotting.object,
 			features = genes,
 			reduction = "tsne",
 			blend = ((overlay == 1) && (length(genes) == 2))

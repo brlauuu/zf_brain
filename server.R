@@ -36,20 +36,7 @@ shinyServer(
 				"Please select file to be laoded and cluster to be plotted."
 			)
 		)
-		if ("all" %in% input$cluster) {
-			plotDimPlot(object)
-		} else {
-			selected.clusters <- meta.data %>%
-				filter(CLUSTER.NAME %in% input$cluster) %>%
-				select(CLUSTER) %>%
-				unlist()
-			plotDimPlot(
-				SubsetData(
-					object,
-					cells.use = (object@ident %in% selected.clusters)
-				)
-			)
-		}
+		plotDimPlot(object, input$cluster)
 	})
 
 	output$violin <- renderPlot({
@@ -59,21 +46,7 @@ shinyServer(
 				"Please select gene to be plotted over given clusters."
 			)
 		)
-		if ("all" %in% input$cluster) {
-			plotViolinPlot(object, input$gene)
-		} else {
-			selected.clusters <- meta.data %>%
-				filter(CLUSTER.NAME %in% input$cluster) %>%
-				select(CLUSTER) %>%
-				unlist()
-			plotViolinPlot(
-				SubsetData(
-					object,
-					cells.use = (object@ident %in% selected.clusters)
-				),
-				input$gene
-			)
-		}
+		plotViolinPlot(object, input$cluster, input$gene)
 	})
 
 	output$umap_gene <- renderPlot({
@@ -83,22 +56,7 @@ shinyServer(
 				"Please select 1 or 2 gene(s) to be plotted over given clusters."
 			)
 		)
-		if ("all" %in% input$cluster) {
-			plotFeaturePlot(object, input$overlay, input$gene)
-		} else {
-			selected.clusters <- meta.data %>%
-				filter(CLUSTER.NAME %in% input$cluster) %>%
-				select(CLUSTER) %>%
-				unlist()
-			plotFeaturePlot(
-				SubsetData(
-					object,
-					cells.use = (object@ident %in% selected.clusters)
-				),
-				input$overlay,
-				input$gene
-			)
-		}
+		plotFeaturePlot(object, input$cluster, input$overlay, input$gene)
  	})
 
 	output$metaTable <- DT::renderDataTable({
@@ -133,105 +91,42 @@ shinyServer(
 	output$downloadMainTsne <- downloadHandler(
 		filename = function() { paste0("tSNE_snapshot.", input$format) },
 		content = function(file) {
-			if ("all" %in% input$cluster) {
-				ggsave(
-					file,
-					plot = plotDimPlot(object),
-					width = as.double(input$width),
-					height = as.double(input$height),
-					units = input$units,
-					device = input$format
-				)
-			} else {
-				selected.clusters <- meta.data %>%
-					filter(CLUSTER.NAME %in% input$cluster) %>%
-					select(CLUSTER) %>%
-					unlist()
-				ggsave(
-					file,
-					plot = plotDimPlot(
-						SubsetData(
-							object,
-							cells.use = (object@ident %in% selected.clusters)
-						)
-					),
-					width = as.double(input$width),
-					height = as.double(input$height),
-					units = input$units,
-					device = input$format
-				)
-			}
+			ggsave(
+				file,
+				plot = plotDimPlot(object, input$cluster),
+				width = as.double(input$width),
+				height = as.double(input$height),
+				units = input$units,
+				device = input$format
+			)
 		}
 	)
 
 	output$downloadGeneOverlay <- downloadHandler(
 		filename = function() { paste0("cluster_expression_snapshot.", input$format) },
 		content = function(file) {
-			if ("all" %in% input$cluster) {
-				ggsave(
-					file,
-					plot = plotFeaturePlot(object, input$overlay, input$gene),
-					width = as.double(input$width),
-					height = as.double(input$height),
-					units = input$units,
-					device = input$format
-				)
-			} else {
-				selected.clusters <- meta.data %>%
-					filter(CLUSTER.NAME %in% input$cluster) %>%
-					select(CLUSTER) %>%
-					unlist()
-				ggsave(
-					file,
-					plot = plotFeaturePlot(
-						SubsetData(
-							object,
-							cells.use = (object@ident %in% selected.clusters)
-						),
-						input$overlay,
-						input$gene
-					),
-					width = as.double(input$width),
-					height = as.double(input$height),
-					units = input$units,
-					device = input$format
-				)
-			}
+			ggsave(
+				file,
+				plot = plotFeaturePlot(object, input$cluster, input$overlay, input$gene),
+				width = as.double(input$width),
+				height = as.double(input$height),
+				units = input$units,
+				device = input$format
+			)
 		}
 	)
 
 	output$downloadViolin <- downloadHandler(
 		filename = function() { paste0("violoin_plot_snapshot.", input$format) },
 		content = function(file) {
-			if ("all" %in% input$cluster) {
-				ggsave(
-					file,
-					plot = plotViolinPlot(object, input$gene),
-					width = as.double(input$width),
-					height = as.double(input$height),
-					units = input$units,
-					device = input$format
-				)
-			} else {
-				selected.clusters <- meta.data %>%
-					filter(CLUSTER.NAME %in% input$cluster) %>%
-					select(CLUSTER) %>%
-					unlist()
-				ggsave(
-					file,
-					plot = plotViolinPlot(
-						SubsetData(
-							object,
-							cells.use = (object@ident %in% selected.clusters)
-						),
-						input$gene
-					),
-					width = as.double(input$width),
-					height = as.double(input$height),
-					units = input$units,
-					device = input$format
-				)
-			}
+			ggsave(
+				file,
+				plot = plotViolinPlot(object, input$cluster, input$gene),
+				width = as.double(input$width),
+				height = as.double(input$height),
+				units = input$units,
+				device = input$format
+			)
 		}
 	)
 
