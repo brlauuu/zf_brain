@@ -122,14 +122,12 @@ plotDimPlot <- function(object, sel.clusters) {
 	if (seurat.version > "2" && seurat.version < "3") {
 		DimPlot(
 			plotting.object,
-			reduction.use = "tsne",
 			do.label = T,
 			cols.use = colors.to.use
 		)
 	} else if (seurat.version > "3") {
 		DimPlot(
 			plotting.object,
-			reduction = "tsne",
 			label = T,
 			cols = colors.to.use
 		)
@@ -156,12 +154,11 @@ plotViolinPlot <- function(object, sel.clusters, genes) {
 
 plotFeaturePlot <- function(object, sel.clusters, overlay, genes) {
 	plotting.object <- object.subset(object, sel.clusters)
-	
+
 	if (seurat.version > "2" && seurat.version < "3") {
 		FeaturePlot(
 			plotting.object,
 			features = genes,
-			reduction.use = "tsne",
 			no.legend = F,
 			cols.use = if (overlay == 1) c("green", "red") else c("lightgray", "blue"),
 			overlay = ((overlay == 1) && (length(genes) == 2))
@@ -170,7 +167,6 @@ plotFeaturePlot <- function(object, sel.clusters, overlay, genes) {
 		FeaturePlot(
 			plotting.object,
 			features = genes,
-			reduction = "tsne",
 			blend = ((overlay == 1) && (length(genes) == 2))
 		)
 	}
