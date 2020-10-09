@@ -118,7 +118,7 @@ object.subset <- function(object, sel.clusters) {
 
 plotDimPlot <- function(object, sel.clusters) {
 	plotting.object <- object.subset(object, sel.clusters)
-	
+
 	if (seurat.version > "2" && seurat.version < "3") {
 		DimPlot(
 			plotting.object,
