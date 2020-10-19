@@ -7,14 +7,14 @@ Neurogenesis comprises many steps from progenitor proliferation to neuronal diff
 
 Co-corresponding authors. Email: bushranraj@gmail.com(B.R.); schier@mcb.harvard.edu(A.F.S.)
 
-https://doi.org/10.1101/839860
+https://doi.org/10.1016/j.neuron.2020.09.023
 
 ## Exploring the dataset using R Shiny App
 
 Thank you for using this ShinyApp for exploring data from the work cited above.
 In order to use the app, you have to follow the following steps:
 
-* Download prepared `Seurat` and `URD` fils from [LINK] to `data` directory
+* Download prepared `Seurat` and `URD` files from [GEO: GSE158142](https://www-ncbi-nlm-nih-gov.ezproxy.u-pec.fr/geo/query/acc.cgi?acc=GSE158142) to `data` directory
 * Install [`Seurat`](https://github.com/satijalab/seurat),
 [`URD`](https://github.com/farrellja/URD) and
 [`Shiny`](https://shiny.rstudio.com/) libraries.
