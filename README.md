@@ -5,7 +5,7 @@ Bushra Raj, Ph.D.; Jeffrey A. Farrell; Jialin Liu; Jakob El Kholtei; Adam N. Car
 
 Neurogenesis comprises many highly regulated processes including proliferation, differentiation, and maturation. However, the transcriptional landscapes underlying brain development are poorly characterized. We describe a developmental single-cell catalog of ∼220,000 zebrafish brain cells encompassing 12 stages from embryo to larva. We characterize known and novel gene markers for ∼800 clusters and provide an overview of the diversification of neurons and progenitors across these time points. We also introduce an optimized GESTALT lineage recorder that enables higher expression and recovery of Cas9-edited barcodes to query lineage segregation. Cell type characterization indicates that most embryonic neural progenitor states are transitory and transcriptionally distinct from neural progenitors of post-embryonic stages. Reconstruction of cell specification trajectories reveals that late-stage retinal neural progenitors transcriptionally overlap cell states observed in the embryo. The zebrafish brain development atlas provides a resource to define and manipulate specific subsets of neurons and to uncover the molecular mechanisms underlying vertebrate neurogenesis.
 
-Co-corresponding authors. Email: Bushra Raj (bushranraj@gmail.com); Alexander F. Schier (alex.schier@unibas.ch)
+Co-corresponding authors. Bushra Raj (bushranraj@gmail.com); Alexander F. Schier (alex.schier@unibas.ch)
 
 https://doi.org/10.1016/j.neuron.2020.09.023
 
