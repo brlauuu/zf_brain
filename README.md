@@ -1,11 +1,11 @@
 
 # Emergence of neuronal diversity during vertebrate brain development
 
-Bushra Raj, Ph.D.; Jeffrey Farrell; Jialin Liu; Jakob El Kholtei; Adam Carte; Joaquin Navajas Acedo; Lucia Du; Aaron McKenna; Đorđe Relić; Jessica Leslie; Alexander Schier
+Bushra Raj, Ph.D.; Jeffrey A. Farrell; Jialin Liu; Jakob El Kholtei; Adam N. Carte; Joaquin Navajas Acedo; Lucia Y. Du; Aaron McKenna; Đorđe Relić; Jessica M. Leslie; Alexander F. Schier
 
-Neurogenesis comprises many steps from progenitor proliferation to neuronal differentiation and maturation. These processes are highly regulated, but the landscape of transcriptional changes underlying brain development are poorly characterized. Here, we describe a developmental single-cell RNA-seq catalog of ~220,000 zebrafish brain cells encompassing 12 stages from 12 hours post-fertilization to 15 days post-fertilization. We characterize known and novel gene markers for ~800 clusters and provide an overview of the diversification of neurons and progenitors across these timepoints. We also introduce an optimized version of the GESTALT lineage recorder that enables higher expression and recovery of Cas9-edited barcodes to query lineage segregation. Cell type characterization indicates that most embryonic neural progenitor states are transitory and transcriptionally distinct from neural progenitors of post-embryonic stages. Reconstruction of cell specification trajectories reveals that late-stage retinal neural progenitors transcriptionally overlap cell states observed in the embryo. The zebrafish brain development atlas provides a resource to define and manipulate specific subsets of neurons and to uncover the molecular mechanisms underlying vertebrate neurogenesis.
+Neurogenesis comprises many highly regulated processes including proliferation, differentiation, and maturation. However, the transcriptional landscapes underlying brain development are poorly characterized. We describe a developmental single-cell catalog of ∼220,000 zebrafish brain cells encompassing 12 stages from embryo to larva. We characterize known and novel gene markers for ∼800 clusters and provide an overview of the diversification of neurons and progenitors across these time points. We also introduce an optimized GESTALT lineage recorder that enables higher expression and recovery of Cas9-edited barcodes to query lineage segregation. Cell type characterization indicates that most embryonic neural progenitor states are transitory and transcriptionally distinct from neural progenitors of post-embryonic stages. Reconstruction of cell specification trajectories reveals that late-stage retinal neural progenitors transcriptionally overlap cell states observed in the embryo. The zebrafish brain development atlas provides a resource to define and manipulate specific subsets of neurons and to uncover the molecular mechanisms underlying vertebrate neurogenesis.
 
-Co-corresponding authors. Email: bushranraj@gmail.com(B.R.); schier@mcb.harvard.edu(A.F.S.)
+Co-corresponding authors. Email: Bushra Raj (bushranraj@gmail.com); Alexander F. Schier (alex.schier@unibas.ch)
 
 https://doi.org/10.1016/j.neuron.2020.09.023
 
@@ -39,7 +39,7 @@ Once you loaded a file, plots will be automatically generated. After that, you
 can select metadata of interest that you would like to explore.
 
 For both libraries, on the bottom of the sidebar, you can find download buttons
-for each of th plots.
+for each of the plots.
 
 ### `Seurat`
 
