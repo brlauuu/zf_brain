@@ -55,4 +55,4 @@ features cannot be combined.
 ## Error troubleshooting
 
 In case of unexpected behavior, please consult first the log in the R console.
-If that did not help, do not hesitate to contact me at dorde.relic@unibas.ch.
+If that did not help, open an [new issue](https://github.com/brlauuu/zf_brain/issues) or contact me at dorde.relic@unibas.ch.

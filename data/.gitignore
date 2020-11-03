@@ -1,4 +1,4 @@
 # Ignore everything in this directory
-*
+*.rds
 # Except this file
 !.gitignore

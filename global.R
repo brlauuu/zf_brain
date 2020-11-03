@@ -172,7 +172,7 @@ plotFeaturePlot <- function(object, sel.clusters, overlay, genes) {
 	}
 }
 
-meta.data <<- read.csv("data/ZFBrainAtlasMaster.csv")
+meta.data <<- read.csv("data/ZFBrainAtlasMaster.tsv", sep="\t")
 meta.data <<- meta.data %>%
 	select("STAGE", "CLUSTER", "ASSIGNED.CELL.TYPE.STATE", "ENRICHED.MARKERS")
 meta.data <<-  meta.data %>%
