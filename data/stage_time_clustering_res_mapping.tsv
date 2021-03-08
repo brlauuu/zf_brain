@@ -1,0 +1,13 @@
+Stage file	Stage time	Clustering resolution
+zf6s_cc_filt.cluster.rds	12 hpf	res.4.5
+zf10s_cc_filt.cluster.rds	14 hpf	res.4
+zf14s_cc_filt.cluster.rds	16 hpf	res.5
+zf18s_cc_filt.cluster.rds	18 hpf	res.5
+zf20hpf_cc_filt.cluster.rds	20 hpf	res.4.5
+zf24hpf_cc_filt.cluster.rds	24 hpf	res.5
+zf36hpf_cc_filt.cluster.rds	36 hpf	res.6
+zf2dpf_cc_filt.cluster.rds	2 dpf	res.6
+zf3dpf_cc_filt.cluster.rds	3 dpf	res.5
+zf5dpf_cc_filt.cluster.rds	5 dpf	res.5.5
+zf8dpf_cc_filt.cluster4.rds	8 dpf	res.6
+zf15dpf_PCAALL.rds	15 dpf	res.5
