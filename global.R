@@ -33,7 +33,7 @@ loadObject <- function(path) {
 		}
 		print(paste0("Loaded Seurat object from path: ", "data/", path))
 	}, error=function(cond) {
-		print(paste("Invalid Seurat file loaded:", "data/", path))
+		print(paste0("Invalid Seurat file loaded:", "data/", path))
 		print("Here's the original error message:")
 		print(cond)
 		object <<- NULL
@@ -51,12 +51,12 @@ listClusters <- function (path) {
 			c(
 				"all",
 				meta.data %>%
-					filter(STAGE == clustering.data$stage[clustering.data$path==path]) %>%
+					filter(STAGE == clustering.data$stage[clustering.data$path==gsub("GSE158142_", "", path)]) %>%
 					select(CLUSTER.NAME)
 			)
 		)
 	}, error=function(cond) {
-		print(paste("Invalid Seurat file loaded:", "data/", path))
+		print(paste0("Invalid Seurat file loaded:", "data/", path))
 		print("Here's the original error message:")
 		print(cond)
 		return("<select>")
@@ -71,7 +71,7 @@ listGenes <- function() {
 			return(c("<select>", sort(rownames(object))))
 		}
 	}, error=function(cond) {
-		print(paste("Invalid Seurat file loaded:", "data/", path))
+		print(paste0("Invalid Seurat file loaded:", "data/", path))
 		print("Here's the original error message:")
 		print(cond)
 		return("<select>")
@@ -88,7 +88,7 @@ listFeaturesURD <- function() {
 			)
 		)
 	}, error=function(cond) {
-		print(paste("Invalid URD file loaded:", "data/", path))
+		print(paste0("Invalid URD file loaded:", "data/", path))
 		print("Here's the original error message:")
 		print(cond)
 		return("<select>")

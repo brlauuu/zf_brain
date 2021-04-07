@@ -70,7 +70,7 @@ shinyServer(
 			subset(
 				meta.data,
 				subset=(
-					STAGE==clustering.data$stage[clustering.data$path==input$path]
+					STAGE==clustering.data$stage[clustering.data$path==gsub("GSE158142_", "", input$path)]
 				)
 			) %>% select(STAGE, CLUSTER.NAME, ENRICHED.MARKERS)
 		} else {
@@ -81,7 +81,7 @@ shinyServer(
 			subset(
 				meta.data,
 				subset=(
-					STAGE==clustering.data$stage[clustering.data$path==input$path]
+					STAGE==clustering.data$stage[clustering.data$path==gsub("GSE158142_", "", input$path)]
 					& CLUSTER %in% selected.clusters
 				)
 			)  %>% select(STAGE, CLUSTER.NAME, ENRICHED.MARKERS)

@@ -17,7 +17,7 @@ In order to use the app, you have to follow the following steps:
 * Download (and decompress!) `Seurat` and `URD` files from [GEO: GSE158142](https://www-ncbi-nlm-nih-gov.ezproxy.u-pec.fr/geo/query/acc.cgi?acc=GSE158142) to `data` directory. NOTE: In case you are experiencing issues downloading files directly from NCBI website, try using [GEOquery](https://rdrr.io/bioc/GEOquery/) package from Bioconductor.
 * Install [`Seurat`](https://github.com/satijalab/seurat),
 [`URD`](https://github.com/farrellja/URD) and
-[`Shiny`](https://shiny.rstudio.com/) libraries.
+[`Shiny`](https://shiny.rstudio.com/) libraries, and their dependencies.
 * Start the ShinyApp by opening `ui.R` from RStudio and clicking `RunApp`.
 
 Seurat objects were built using `Seurat v2.3.4`. We recommend using this
